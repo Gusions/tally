@@ -1,0 +1,345 @@
+/* Tally: every rule is scoped to .tally (or the tooltip) so nothing leaks into the rest of Obsidian. */
+.tally, .tally-tip, .tally-modal {
+  --ty-card: var(--background-secondary);
+  --ty-ink: var(--text-normal);
+  --ty-ink2: var(--text-muted);
+  --ty-muted: var(--text-faint);
+  --ty-line: var(--background-modifier-border);
+  --ty-grid: var(--background-modifier-border);
+  --ty-hl: var(--background-modifier-hover);
+  --ty-accent: var(--interactive-accent);
+  --ty-accent-ink: var(--text-on-accent);
+  --ty-good: var(--color-green);
+  --ty-bad: var(--color-red);
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7;
+}
+.theme-dark .tally, .theme-dark .tally-tip, .theme-dark .tally-modal {
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9;
+}
+.tally-view .view-content, .view-content.tally-view { padding: 0 var(--size-4-4) var(--size-4-8); }
+.tally { container-type: inline-size; font-family: var(--font-interface); font-size: 14px; line-height: 1.45; color: var(--ty-ink); max-width: 1180px; margin-inline: auto; }
+.tally *, .tally *::before, .tally *::after { box-sizing: border-box; }
+.tally h2 { font-size: 16px; font-weight: 600; margin: 0; line-height: 1.3; }
+.tally p { margin: 0; }
+.tally button { font-family: inherit; box-shadow: none; height: auto; }
+.tally button:focus-visible, .tally select:focus-visible, .tally input:focus-visible { outline: 2px solid var(--ty-accent); outline-offset: 2px; }
+
+.tally .ty-head { padding-top: 10px; background: var(--background-primary); border-bottom: 1px solid var(--ty-line); padding-bottom: 8px; }
+.tally-view .ty-head { position: sticky; top: 0; z-index: 5; }
+.tally .brand { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; }
+.tally nav.tabs { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+.tally nav.tabs::-webkit-scrollbar { display: none; }
+.tally nav.tabs button { background: none; border: 0; border-bottom: 3px solid transparent; border-radius: 0; color: var(--ty-ink2); padding: 8px 12px 7px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.tally nav.tabs button:hover { color: var(--ty-ink); background: none; }
+.tally nav.tabs button[aria-selected="true"] { color: var(--ty-ink); border-bottom-color: var(--ty-accent); font-weight: 600; }
+.tally .asof { display: flex; align-items: center; gap: 10px; font-family: var(--font-monospace); font-size: 12px; color: var(--ty-muted); }
+.tally .bar { margin-top: 8px; }
+
+.tally .ctl { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.tally .ctl label { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ty-muted); }
+.tally select, .tally input[type="search"] { font-size: 13px; min-height: 30px; height: 30px; }
+.tally input[type="search"] { min-width: 200px; }
+.tally .chip { font-size: 12.5px; font-weight: 500; color: var(--ty-ink2); background: var(--ty-card); border: 1px solid var(--ty-line); border-radius: 999px; padding: 4px 12px; min-height: 30px; cursor: pointer; }
+.tally .chip:hover { color: var(--ty-ink); background: var(--ty-hl); }
+.tally .chip[aria-pressed="true"] { background: var(--ty-accent); border-color: var(--ty-accent); color: var(--ty-accent-ink); }
+.tally .seg { display: inline-flex; border: 1px solid var(--ty-line); border-radius: 6px; overflow: hidden; }
+.tally .seg button { background: none; border: 0; border-radius: 0; color: var(--ty-ink2); font-size: 12px; font-weight: 500; padding: 5px 10px; cursor: pointer; }
+.tally .seg button[aria-pressed="true"] { background: var(--ty-hl); color: var(--ty-ink); }
+
+.tally .ty-main { padding-top: 16px; display: flex; flex-direction: column; gap: 16px; }
+.tally .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.tally .kpi { background: var(--ty-card); border: 1px solid var(--ty-line); border-radius: 8px; padding: 12px 14px; min-width: 0; }
+.tally .kpi .l { font-size: 11.5px; letter-spacing: .04em; text-transform: uppercase; color: var(--ty-muted); }
+.tally .kpi .v { font-family: var(--font-monospace); font-size: 22px; font-weight: 500; margin-top: 4px; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.tally .kpi .d { font-size: 12px; color: var(--ty-ink2); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.tally .up { color: var(--ty-good); } .tally .down { color: var(--ty-bad); }
+
+.tally .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.tally .card { background: var(--ty-card); border: 1px solid var(--ty-line); border-radius: 8px; padding: 14px 16px; min-width: 0; grid-column: span 12; }
+.tally .card.w4 { grid-column: span 4; } .tally .card.w5 { grid-column: span 5; } .tally .card.w6 { grid-column: span 6; } .tally .card.w7 { grid-column: span 7; } .tally .card.w8 { grid-column: span 8; }
+@container (max-width: 860px) { .tally .card.w4, .tally .card.w5, .tally .card.w6, .tally .card.w7, .tally .card.w8 { grid-column: span 12; } }
+.tally .ty-main > .card { grid-column: auto; }
+.tally .ch-h { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; flex-wrap: wrap; }
+.tally .sub { font-size: 12.5px; color: var(--ty-ink2); margin-top: 2px; max-width: 62ch; }
+.tally .sub .chip { margin-left: 8px; }
+.tally .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0 4px; font-size: 12px; color: var(--ty-ink2); }
+.tally .legend span { display: inline-flex; gap: 6px; align-items: center; }
+.tally .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex: none; }
+.tally .plot { margin-top: 6px; position: relative; }
+.tally .plot svg { display: block; max-width: 100%; overflow: visible; }
+.tally .ax { font: 11px var(--font-monospace); fill: var(--ty-muted); }
+.tally .axl { font: 12px var(--font-interface); fill: var(--ty-ink2); }
+.tally .tbl { overflow-x: auto; margin-top: 8px; }
+.tally table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 0; }
+.tally th { font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ty-muted); font-weight: 500; text-align: left; padding: 6px 8px; border: 0; border-bottom: 1px solid var(--ty-line); background: none; white-space: nowrap; }
+.tally td { padding: 6px 8px; border: 0; border-bottom: 1px solid var(--ty-grid); vertical-align: top; }
+.tally td.n, .tally th.n { text-align: right; font-family: var(--font-monospace); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tally .tag { font-size: 10.5px; letter-spacing: .03em; text-transform: uppercase; border: 1px solid var(--ty-line); color: var(--ty-ink2); border-radius: 4px; padding: 1px 5px; margin-left: 4px; white-space: nowrap; }
+.tally .hb { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+.tally .hb .r { display: grid; grid-template-columns: minmax(80px, 150px) minmax(0, 1fr) 84px; gap: 10px; align-items: center; font-size: 13px; }
+.tally .hb .r span { min-width: 0; overflow-wrap: anywhere; }
+.tally .hb .r .t { background: var(--ty-grid); height: 10px; border-radius: 2px; overflow: hidden; }
+.tally .hb .r .t i { display: block; height: 100%; border-radius: 0 3px 3px 0; }
+.tally .hb .r b { font: 500 12.5px var(--font-monospace); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.tally .list { display: flex; flex-direction: column; margin-top: 8px; }
+.tally .list .it { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--ty-grid); font-size: 13px; }
+.tally .list .it:last-child { border-bottom: 0; }
+.tally .list .dt { font-family: var(--font-monospace); font-size: 12px; color: var(--ty-muted); min-width: 64px; }
+.tally .list .nm { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.tally .list .am { font-family: var(--font-monospace); font-variant-numeric: tabular-nums; }
+.tally .note { font-size: 12px; color: var(--ty-muted); margin-top: 10px; }
+.tally .empty { padding: 22px 8px; color: var(--ty-muted); text-align: center; }
+.tally .more { margin-top: 10px; }
+.tally .foot { margin-top: 20px; font-size: 12px; color: var(--ty-muted); }
+.tally .card.err { max-width: 560px; }
+.tally .card.err .ctl { margin-top: 12px; }
+
+.tally-tip { position: fixed; z-index: var(--layer-tooltip, 100); pointer-events: none; background: var(--background-primary); color: var(--text-normal); border: 1px solid var(--background-modifier-border); border-radius: 6px; box-shadow: var(--shadow-s); padding: 8px 10px; font-size: 12px; min-width: 140px; max-width: 260px; font-family: var(--font-interface); }
+.tally-tip[hidden] { display: none; }
+.tally-tip b { display: block; margin-bottom: 4px; font-weight: 600; }
+.tally-tip .tr { display: flex; justify-content: space-between; gap: 14px; align-items: center; }
+.tally-tip .tr span { display: inline-flex; gap: 6px; align-items: center; }
+.tally-tip .tr em { font: normal 12px var(--font-monospace); font-variant-numeric: tabular-nums; }
+.tally-tip .tt { border-top: 1px solid var(--background-modifier-border); margin-top: 4px; padding-top: 4px; }
+.tally-tip .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; flex: none; }
+
+.tally .ctl input[type="number"].amt { width: 84px; min-height: 30px; height: 30px; font-size: 13px; }
+.tally .ctl input[type="date"] { min-height: 30px; height: 30px; font-size: 13px; }
+.tally .ty-head .ctl.bar { row-gap: 6px; }
+.tally td .dim { opacity: .4; }
+.tally td input[type="checkbox"] { margin: 0; cursor: pointer; }
+.tally th:first-child:empty, .tally td:first-child:has(input[type="checkbox"]) { width: 28px; padding-right: 0; }
+
+.tally .tgl { margin-top: 10px; }
+.tally .tgl .chip { display: inline-flex; align-items: center; gap: 6px; }
+.tally .tgl .chip[aria-pressed="true"] { background: var(--ty-hl); border-color: var(--ty-ink2); color: var(--ty-ink); }
+.tally .tgl .chip[aria-pressed="false"] { opacity: .5; }
+.tally .tgl .chip .sw { margin: 0; }
+
+/* selectable text everywhere in the dashboard */
+.tally, .tally * { -webkit-user-select: text; user-select: text; }
+.tally button, .tally select, .tally .tabs, .tally .tabs *, .tally .chip, .tally .tgl button { -webkit-user-select: none; user-select: none; }
+
+/* privacy: blur amounts */
+.tally.ty-hide .kpi .v, .tally.ty-hide .kpi .d, .tally.ty-hide td.n, .tally.ty-hide .hb .r b, .tally.ty-hide .plot, .tally.ty-hide input.amt, .tally.ty-hide .note, .tally.ty-hide .amt { filter: blur(7px); transition: filter .15s; }
+.tally.ty-hide .kpi .v:hover, .tally.ty-hide td.n:hover, .tally.ty-hide .hb .r b:hover, .tally.ty-hide input.amt:focus { filter: none; }
+.tally-tip.ty-hide { filter: blur(6px); }
+
+/* ---- customisation: look overrides ---- */
+.tally .card, .tally .kpi { border-radius: var(--ty-radius, 8px); }
+.tally.ty-theme-light, .tally-tip.ty-theme-light { --ty-card: #f3f3f3; --ty-ink: #1f1f1f; --ty-ink2: #555; --ty-muted: #8a8a8a; --ty-line: #dcdcdc; --ty-grid: #e3e3e3; --ty-hl: #e8e8e8; --background-primary: #ffffff; --background-secondary: #f3f3f3; --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; }
+.tally.ty-theme-dark, .tally-tip.ty-theme-dark { --ty-card: #262626; --ty-ink: #e8e8e8; --ty-ink2: #b4b4b4; --ty-muted: #7d7d7d; --ty-line: #3a3a3a; --ty-grid: #333; --ty-hl: #333; --background-primary: #1c1c1c; --background-secondary: #262626; --background-modifier-border: #3a3a3a; --background-modifier-hover: #333; --text-normal: #e8e8e8; --text-muted: #b4b4b4; --text-faint: #7d7d7d; --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #2aa02a; --s7: #9085e9; }
+.tally.ty-theme-light, .tally.ty-theme-dark { background: var(--background-primary); border-radius: 10px; padding: 0 12px 12px; }
+.tally.ty-outline .card, .tally.ty-outline .kpi { background: transparent; }
+.tally.ty-numui td.n, .tally.ty-numui th.n, .tally.ty-numui .kpi .v, .tally.ty-numui .hb .r b { font-family: inherit; }
+.tally.ty-d-compact .grid { gap: 8px; } .tally.ty-d-compact .kpis { gap: 8px; } .tally.ty-d-compact .card { padding: 9px 11px; } .tally.ty-d-compact .kpi { padding: 8px 10px; } .tally.ty-d-compact td, .tally.ty-d-compact th { padding-top: 3px; padding-bottom: 3px; }
+.tally.ty-d-roomy .grid { gap: 24px; } .tally.ty-d-roomy .kpis { gap: 18px; } .tally.ty-d-roomy .card { padding: 20px 22px; } .tally.ty-d-roomy .kpi { padding: 16px 18px; } .tally.ty-d-roomy td, .tally.ty-d-roomy th { padding-top: 9px; padding-bottom: 9px; }
+
+/* ---- customisation dialog ---- */
+.tally-modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; font-family: var(--font-interface); color: var(--ty-ink); }
+.tally-modal .pf-back { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
+.tally-modal .pf-dlg { position: relative; width: min(640px, 94vw); max-height: 88vh; display: flex; flex-direction: column; background: var(--background-primary); border: 1px solid var(--ty-line); border-radius: 12px; box-shadow: var(--shadow-l, 0 12px 40px rgba(0,0,0,.35)); overflow: hidden; }
+.tally-modal .pf-top { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--ty-line); }
+.tally-modal .pf-top h2 { margin: 0; font-size: 17px; }
+.tally-modal button { font-family: inherit; cursor: pointer; }
+.tally-modal .pf-body { overflow-y: auto; padding: 4px 18px 18px; }
+.tally-modal section { padding: 12px 0 6px; border-bottom: 1px solid var(--ty-line); }
+.tally-modal section:last-child { border-bottom: 0; }
+.tally-modal h3 { margin: 0 0 8px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ty-muted); font-weight: 600; }
+.tally-modal .pf-row { padding: 5px 0; }
+.tally-modal .pf-row label { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 14px; }
+.tally-modal .pf-row small, .tally-modal .pf-hint { display: block; color: var(--ty-muted); font-size: 12px; margin: 2px 0 8px; }
+.tally-modal select, .tally-modal input[type="number"] { min-width: 150px; max-width: 220px; }
+.tally-modal .pf-rng { display: flex; align-items: center; gap: 10px; } .tally-modal .pf-rng output { width: 56px; text-align: right; font-variant-numeric: tabular-nums; color: var(--ty-ink2); }
+.tally-modal .pf-acc { display: flex; align-items: center; gap: 6px; }
+.tally-modal .pf-sw { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; padding: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,.2); }
+.tally-modal .pf-sw.on { border-color: var(--ty-ink); }
+.tally-modal input[type="color"] { width: 30px; height: 26px; padding: 0; border: 0; background: none; }
+.tally-modal .pf-tab { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; font-size: 14px; }
+.tally-modal .pf-tab button { margin-left: 4px; min-width: 30px; }
+.tally-modal details { padding: 4px 0; } .tally-modal summary { cursor: pointer; font-weight: 500; padding: 4px 0; }
+.tally-modal .pf-li { display: flex; align-items: center; gap: 8px; padding: 2px 0 2px 16px; font-size: 13px; color: var(--ty-ink2); }
+.tally-modal .pf-json { width: 100%; font-family: var(--font-monospace); font-size: 11.5px; resize: vertical; }
+.tally-modal .pf-btns { display: flex; gap: 8px; margin-top: 8px; }
+.tally-modal .pf-msg { min-height: 18px; color: var(--ty-ink2); font-size: 12.5px; margin-top: 6px; }
+.tally-modal .pf-empty { color: var(--ty-muted); font-size: 13px; }
+
+/* ---- phones and tablets ---- */
+.tally .chip { white-space: nowrap; }
+@media (max-width: 600px) { .tally-view .ty-head { position: static; } .tally .brand { gap: 6px 10px; } .tally .asof { flex-wrap: wrap; gap: 6px; } }
+.is-mobile .tally .chip, .is-mobile .tally .seg button { min-height: 36px; }
+.is-mobile .tally select, .is-mobile .tally input[type="number"], .is-mobile .tally input[type="date"] { min-height: 36px; }
+.is-mobile .tally .tbl { -webkit-overflow-scrolling: touch; }
+@container (max-width: 460px) { .tally .kpi .v { font-size: 19px; } .tally .card { padding: 12px; } .tally .grid { gap: 12px; } .tally .kpis { gap: 8px; } }
+
+/* ---- phone layout (applied when the view is 600px wide or less) ---- */
+.tally .mtop, .tally .mbar, .tally .cat { display: none; }
+.tally.ty-m { max-width: none; font-size: 14px; }
+.tally.ty-m .mtop { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 0 2px; }
+.tally.ty-m .mtop h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+.tally.ty-m .mact { display: flex; gap: 6px; }
+.tally .ib { position: relative; width: 38px; height: 38px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; border: 0; background: var(--ty-card); color: var(--ty-ink2); cursor: pointer; }
+.tally .ib[aria-pressed="true"] { background: var(--ty-accent); color: var(--ty-accent-ink); }
+.tally .ib .dot { position: absolute; top: 7px; right: 7px; width: 8px; height: 8px; border-radius: 50%; background: var(--ty-accent); border: 2px solid var(--background-primary); }
+.tally .ib[aria-pressed="true"] .dot { background: var(--ty-accent-ink); border-color: var(--ty-accent); }
+.tally.ty-m .ty-head { position: static; border-bottom: 0; padding-bottom: 4px; }
+.tally.ty-m .brand { margin-top: 0; }
+.tally.ty-m .brand .tabs, .tally.ty-m .asof .chip { display: none; }
+.tally.ty-m .asof { font-size: 11px; width: 100%; }
+.tally.ty-m .ctl.bar { display: none; }
+.tally.ty-m .ctl.bar.fo { display: flex; background: var(--ty-card); border-radius: 16px; padding: 12px; margin-top: 8px; gap: 10px; }
+.tally.ty-m .ctl.bar .chip, .tally.ty-m .ctl.bar select { min-height: 38px; }
+.tally.ty-m .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
+.tally.ty-m .kpi { border: 0; border-radius: 18px; padding: 14px; }
+.tally.ty-m .kpi:first-child { grid-column: 1 / -1; padding: 18px 16px; }
+.tally.ty-m .kpi:first-child .v { font-size: 32px; }
+.tally.ty-m .kpi .v { font-size: 21px; }
+.tally.ty-m .card { border: 0; border-radius: 18px; padding: 16px 14px; }
+.tally.ty-m .grid { gap: 12px; }
+.tally.ty-m .ty-main { margin-top: 10px; }
+.tally.ty-m .cat { display: block; font-size: 11.5px; color: var(--ty-muted); }
+.tally.ty-m #mov th:nth-child(3), .tally.ty-m #mov td:nth-child(3) { display: none; }
+.tally.ty-m td, .tally.ty-m th { padding: 9px 6px; }
+.tally.ty-m .foot { margin-bottom: 8px; }
+.tally.ty-m .mbar { display: flex; position: sticky; top: 0; z-index: 8; margin: 0 -16px 10px; padding: 6px; background: var(--background-primary); border-bottom: 1px solid var(--ty-line); }
+.tally.ty-m { padding-bottom: calc(var(--ty-nav, 0px) + 12px); }
+.tally .mi { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 7px 2px 5px; min-height: 52px; border: 0; border-radius: 14px; background: none; color: var(--ty-muted); font-size: 10.5px; font-weight: 500; cursor: pointer; }
+.tally .mi span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tally .mi[aria-selected="true"] { color: var(--ty-accent); background: var(--ty-hl); }
+.tally .mmenu { position: absolute; right: 8px; top: calc(100% + 8px); min-width: 210px; padding: 6px; background: var(--background-primary); border: 1px solid var(--ty-line); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); display: flex; flex-direction: column; }
+.tally .mr { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0; border-radius: 12px; background: none; color: var(--ty-ink); font-size: 15px; text-align: left; cursor: pointer; }
+.tally .mr[aria-selected="true"] { background: var(--ty-hl); color: var(--ty-accent); }
+@media (max-width: 600px) { .tally-modal .pf-dlg { width: 100vw; height: 100dvh; max-height: 100dvh; border-radius: 0; } .tally-modal .pf-row label { flex-wrap: wrap; } .tally-modal select, .tally-modal input[type="number"] { max-width: 100%; } }
+.tally.ty-m .card .tgl ~ .legend { display: none; }
+
+body:has(.workspace-leaf.mod-active .tally.ty-hidenav) .mobile-navbar { display: none !important; }
+
+/* ===== Look "Kith": flat, dense, thin borders, theme colours (same language as the Kith plugin) ===== */
+.tally.ty-kith { --kr: 6px; --kr-lg: 8px; --ty-card: var(--background-primary); font-size: var(--font-ui-small); }
+.tally.ty-kith h2, .tally.ty-kith h3 { font-family: var(--font-interface); font-size: var(--font-ui-medium); font-weight: 600; letter-spacing: 0; }
+.tally.ty-kith .ty-head { padding: 8px 0; }
+.tally.ty-kith nav.tabs { gap: 2px; }
+.tally.ty-kith nav.tabs button { border: 0; border-radius: var(--kr); height: 28px; padding: 0 10px; color: var(--ty-ink2); font-size: var(--font-ui-small); font-weight: 500; }
+.tally.ty-kith nav.tabs button:hover { background: var(--ty-hl); color: var(--ty-ink); }
+.tally.ty-kith nav.tabs button[aria-selected="true"] { background: var(--ty-hl); color: var(--ty-ink); border: 0; font-weight: 600; }
+.tally.ty-kith .asof { font-family: var(--font-interface); font-size: var(--font-ui-smaller); color: var(--ty-muted); }
+.tally.ty-kith select, .tally.ty-kith input[type="search"], .tally.ty-kith input[type="number"], .tally.ty-kith input[type="text"] { height: 28px; min-height: 28px; border-radius: var(--kr); font-size: var(--font-ui-small); box-shadow: none; }
+.tally.ty-kith select { background-color: transparent; border-color: transparent; color: var(--ty-ink2); }
+.tally.ty-kith select:hover { background-color: var(--ty-hl); color: var(--ty-ink); }
+.tally.ty-kith .chip { height: 26px; min-height: 26px; padding: 0 9px; border-radius: var(--kr); background: transparent; border: 1px solid var(--ty-line); font-size: var(--font-ui-smaller); }
+.tally.ty-kith .chip:hover { background: var(--ty-hl); border-color: var(--ty-line); }
+.tally.ty-kith .chip[aria-pressed="true"] { background: color-mix(in srgb, var(--ty-accent) 12%, transparent); border-color: transparent; color: var(--ty-accent); }
+.tally.ty-kith .seg { border: 0; gap: 2px; overflow: visible; }
+.tally.ty-kith .seg button { border-radius: var(--kr); height: 26px; padding: 0 9px; font-size: var(--font-ui-small); }
+.tally.ty-kith .seg button:hover { background: var(--ty-hl); color: var(--ty-ink); }
+.tally.ty-kith .seg button[aria-pressed="true"] { background: var(--ty-hl); color: var(--ty-ink); font-weight: 500; }
+
+/* KPI: one strip with hairline dividers */
+.tally.ty-kith .kpis { display: flex; flex-wrap: wrap; gap: 1px; background: var(--ty-line); border: 1px solid var(--ty-line); border-radius: var(--kr-lg); overflow: hidden; }
+.tally.ty-kith .kpi { flex: 1 1 150px; display: flex; flex-direction: column; justify-content: flex-start; background: var(--background-primary); border: 0; border-radius: 0; padding: 9px 16px; }
+.tally.ty-kith .kpi .v { order: 1; font-family: var(--font-interface); font-size: 1.4em; font-weight: 600; letter-spacing: 0; line-height: 1.15; margin: 0; }
+.tally.ty-kith .kpi .l { order: 2; font-size: var(--font-ui-smaller); letter-spacing: 0; text-transform: none; color: var(--ty-ink2); }
+.tally.ty-kith .kpi .d { order: 3; font-size: var(--font-ui-smaller); color: var(--ty-muted); margin: 0; }
+
+/* Cards: flat, thin border */
+.tally.ty-kith .grid { gap: 12px; }
+.tally.ty-kith .card { background: var(--background-primary); border: 1px solid var(--ty-line); border-radius: var(--kr-lg); padding: 12px 14px; box-shadow: none; }
+.tally.ty-kith .card .sub, .tally.ty-kith .card p { color: var(--ty-ink2); font-size: var(--font-ui-smaller); }
+
+/* Tables: 36px rows, header on secondary background, hover highlight */
+.tally.ty-kith table { font-size: var(--font-ui-small); }
+.tally.ty-kith th { font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ty-ink2); background: var(--background-secondary); height: 30px; padding: 0 12px; vertical-align: middle; border-bottom: 1px solid var(--ty-line); }
+.tally.ty-kith td { height: 36px; padding: 0 12px; vertical-align: middle; border-bottom: 1px solid var(--ty-line); }
+.tally.ty-kith tbody tr:last-child td { border-bottom: 0; }
+.tally.ty-kith tbody tr:hover td { background: var(--ty-hl); }
+.tally.ty-kith td.n, .tally.ty-kith th.n { font-family: var(--font-interface); font-variant-numeric: tabular-nums; }
+.tally.ty-kith .hb .r b { font-family: var(--font-interface); font-variant-numeric: tabular-nums; }
+
+/* Phone: same flat language, smaller radii instead of the big rounded cards */
+.tally.ty-kith.ty-m .kpis { grid-template-columns: initial; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--ty-line); }
+.tally.ty-kith.ty-m .kpi { border-radius: 0; padding: 12px 14px; }
+.tally.ty-kith.ty-m .kpi:first-child { grid-column: 1 / -1; padding: 14px 16px; }
+.tally.ty-kith.ty-m .kpi:first-child .v { font-size: 30px; }
+.tally.ty-kith.ty-m .kpi .v { font-size: 20px; }
+.tally.ty-kith.ty-m .card { border: 1px solid var(--ty-line); border-radius: var(--kr-lg); padding: 12px; }
+.tally.ty-kith.ty-m .mbar { background: var(--background-primary); border-bottom: 1px solid var(--ty-line); }
+.tally.ty-kith.ty-m .mi { border-radius: var(--kr); }
+.tally.ty-kith.ty-m .mi[aria-selected="true"] { background: var(--ty-hl); color: var(--ty-ink); }
+.tally.ty-kith .ib { background: transparent; border: 1px solid var(--ty-line); }
+
+/* 0.9.1: alignment guard + boxed controls in the filter row */
+.tally .grid, .tally .kpis, .tally .ty-main { margin: 0; }
+.tally .ty-main > *, .tally .grid > .card { margin: 0 !important; max-width: none; }
+.tally .grid { padding: 0 !important; }
+.tally.ty-kith .ty-head { padding: 8px 0 10px; }
+.tally.ty-kith .bar { margin-top: 10px; }
+.tally.ty-kith .ctl { gap: 8px 12px; }
+.tally.ty-kith .ctl select { border: 1px solid var(--ty-line); background-color: var(--background-primary); color: var(--ty-ink); padding: 0 24px 0 9px; }
+.tally.ty-kith .ctl select:hover { background-color: var(--ty-hl); border-color: var(--ty-line); }
+.tally.ty-kith .ctl label { gap: 6px; color: var(--ty-ink2); }
+.tally.ty-kith .seg { display: inline-flex; gap: 0; border: 1px solid var(--ty-line); border-radius: var(--kr); overflow: hidden; background: var(--background-primary); }
+.tally.ty-kith .seg button { height: 26px; border-radius: 0; border-right: 1px solid var(--ty-line); }
+.tally.ty-kith .seg button:last-child { border-right: 0; }
+.tally.ty-kith .ctl .chip { background: var(--background-primary); }
+/* keep two-card rows on the same 7/5 column split so edges line up row after row */
+@container (min-width: 861px) {
+  .tally.ty-kith .card.w6:nth-child(odd) { grid-column: span 7; }
+  .tally.ty-kith .card.w6:nth-child(even) { grid-column: span 5; }
+}
+
+/* 0.9.2: breathing room (Kith look) */
+.tally.ty-kith .ty-head { padding: 14px 0 16px; }
+.tally.ty-kith .bar { margin-top: 16px; }
+.tally.ty-kith .ctl { gap: 10px 16px; }
+.tally.ty-kith .ty-main { padding-top: 24px; gap: 24px; }
+.tally.ty-kith .grid { gap: 20px; }
+.tally.ty-kith .kpi { padding: 16px 20px; gap: 4px; }
+.tally.ty-kith .kpi .l { margin-top: 2px; }
+.tally.ty-kith .kpi .d { margin-top: 4px; line-height: 1.4; }
+.tally.ty-kith .card { padding: 18px 20px; }
+.tally.ty-kith .card h2 { margin-bottom: 4px; }
+.tally.ty-kith.ty-m .ty-main { padding-top: 16px; gap: 16px; }
+.tally.ty-kith.ty-m .kpi { padding: 14px 16px; }
+.tally.ty-kith.ty-m .card { padding: 16px; }
+.tally.ty-kith.ty-m .grid { gap: 16px; }
+
+/* 0.9.3: tabs row and filter row are separate bands, filter groups divided */
+.tally.ty-kith .brand { padding-bottom: 12px; border-bottom: 1px solid var(--ty-line); }
+.tally.ty-kith .bar { margin-top: 14px; }
+@container (min-width: 700px) {
+  .tally.ty-kith .ctl > * + * { padding-left: 16px; border-left: 1px solid var(--ty-line); }
+  .tally.ty-kith .ctl > .seg + *, .tally.ty-kith .ctl > * + .seg { border-left: 1px solid var(--ty-line); }
+}
+
+/* 0.9.4: Kith look on desktop = one single header row; filters open on demand */
+.tally .asof .ib, .tally .asof .seg, .tally .asof .psum { display: none; }
+.tally.ty-kith:not(.ty-m) .asof { gap: 6px; }
+.tally.ty-kith:not(.ty-m) .asof > span:first-child { display: none; }
+.tally.ty-kith:not(.ty-m) .asof .chip { display: none; }
+.tally.ty-kith:not(.ty-m) .asof .ib { display: inline-flex; width: 28px; height: 28px; border: 0; border-radius: var(--kr); background: transparent; color: var(--ty-ink2); }
+.tally.ty-kith:not(.ty-m) .asof .ib svg { width: 16px; height: 16px; }
+.tally.ty-kith:not(.ty-m) .asof .ib:hover { background: var(--ty-hl); color: var(--ty-ink); }
+.tally.ty-kith:not(.ty-m) .asof .ib[aria-pressed="true"] { background: var(--ty-hl); color: var(--ty-accent); }
+.tally.ty-kith:not(.ty-m) .asof .ib .dot { top: 4px; right: 4px; width: 7px; height: 7px; border-width: 1.5px; }
+.tally.ty-kith:not(.ty-m) .asof .seg { display: inline-flex; margin-right: 4px; }
+.tally.ty-kith:not(.ty-m) .asof .psum { display: inline; font-size: var(--font-ui-smaller); color: var(--ty-ink2); margin-right: 2px; }
+.tally.ty-kith:not(.ty-m) .asof .psum:empty { display: none; }
+.tally.ty-kith:not(.ty-m) .brand { border-bottom: 0; padding-bottom: 0; }
+.tally.ty-kith:not(.ty-m) .ty-head { padding: 10px 0 10px; }
+.tally.ty-kith:not(.ty-m) .ctl.bar { display: none; }
+.tally.ty-kith:not(.ty-m) .ctl.bar.fo { display: flex; margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--ty-line); }
+.tally.ty-kith:not(.ty-m) .ctl.bar > .seg { display: none; }
+.tally.ty-kith .ctl > .seg + *, .tally.ty-kith .ctl > * + .seg { border-left: 0; padding-left: 0; }
+.tally.ty-kith.ty-m .asof .ib, .tally.ty-kith.ty-m .asof .seg, .tally.ty-kith.ty-m .asof .psum { display: none; }
+
+/* 0.9.6: KPI strip on desktop = one line per text, so every cell lines up */
+.tally.ty-kith:not(.ty-m) .kpi { min-width: 0; }
+.tally.ty-kith:not(.ty-m) .kpi .l, .tally.ty-kith:not(.ty-m) .kpi .d { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.tally.ty-kith:not(.ty-m) .kpi .v { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 0.9.8 refresh feedback */
+.tally .ib.spin svg { animation: ty-spin 0.9s linear infinite; }
+@keyframes ty-spin { to { transform: rotate(360deg); } }
+
+/* 0.9.9 never let the browser shift the scroll position on its own */
+.tally-view, .tally, .tally * { overflow-anchor: none; }

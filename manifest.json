@@ -1,0 +1,9 @@
+{
+  "id": "tally-money",
+  "name": "Tally",
+  "version": "0.9.10",
+  "minAppVersion": "1.5.0",
+  "description": "A personal finance dashboard that reads your spending and net-worth spreadsheet (.xlsx) from the vault and redraws itself when the file changes.",
+  "author": "@gusions",
+  "isDesktopOnly": false
+}

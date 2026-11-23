@@ -1,0 +1,19 @@
+{
+  "name": "tally-money",
+  "version": "0.9.10",
+  "private": true,
+  "description": "Personal finance dashboard for Obsidian, read from an xlsx in the vault",
+  "scripts": {
+    "build": "node esbuild.config.mjs production",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@types/node": "^26.6.5",
+    "esbuild": "^0.28.2",
+    "jsdom": "^29.1.1",
+    "obsidian": "^1.14.4",
+    "typescript": "^7.0.2",
+    "xlsx": "^0.18.5"
+  },
+  "license": "GPL-3.0-only"
+}

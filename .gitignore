@@ -1,0 +1,9 @@
+node_modules
+main.js
+test/entry.js
+test/*.png
+test/__pycache__
+.DS_Store
+data.json
+tally-debug.log
+cache.xlsx
