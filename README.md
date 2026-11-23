@@ -30,7 +30,7 @@
 2. **Put it where Tally can read it**:
    - *Google Sheets*: upload the file to Google Drive and open it with Google Sheets (*File → Save as Google Sheets*). Formulas and drop-down menus carry over.
    - *Local file*: copy the `.xlsx` into your vault and choose **File in the vault** in the Tally settings.
-3. **Install the plugin**: download `main.js`, `manifest.json` and `styles.css` from the [latest release](RELEASE_LINK), copy them into `<your vault>/.obsidian/plugins/tally-money/` and enable **Tally** in *Settings → Community plugins*.
+3. **Install the plugin**: download `main.js`, `manifest.json` and `styles.css` from the [latest release](https://github.com/Gusions/tally/releases/latest), copy them into `<your vault>/.obsidian/plugins/tally-money/` and enable **Tally** in *Settings → Community plugins*.
 4. **Connect your sheet** (next section), or skip it if you chose the local file.
 5. Click the wallet icon in the ribbon, or run **Tally: Open dashboard**.
 
